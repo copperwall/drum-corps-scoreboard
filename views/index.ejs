@@ -2,14 +2,40 @@
 <html>
   <head>
     <title>Drum Corps Scoreboard</title>
-    <link rel='stylesheet' href='/scoreboard/stylesheets/style.css' />
+    <!-- <link rel="stylesheet" href="/scoreboard/stylesheets/style.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/scoreboard/stylesheets/scoreboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
   </head>
   <body>
-    <h1>Drum Corps Scoreboard</h1>
-
-    <h3>Scores</h3>
-    <pre>
-<%= scores %>
-    </pre>
+     <header class="container">
+       <h1>Drum Corps Scoreboard</h1>
+     </header>
+     <div id="main" class="container">
+       <% competitions.forEach(function(competition) { %>
+         <div class="competition">
+            <div class="competition-title">
+               <h3 class="lead"><%= competition.name %></h3>
+               <p class="muted"><%= competition.location %></p>
+            </div>
+            <% competition.rounds.forEach(function(round) { %>
+               <!-- Stuff about world/open class, all age -->
+               <div class="round">
+                  <h4><%= round.name %></h4>
+                  <% round.performances.forEach(function(performance) { %>
+                     <% // Truncate to three decimal places %>
+                     <% var score = performance.score.toFixed(3); %>
+                     <div class="row performance">
+                        <div class="col-xs-2 col-md-4"><%= performance.rank %></div>
+                        <div class="col-xs-4 col-md-4"><%= performance.name %></div>
+                        <div class="col-xs-4 col-md-4"><%= score %></div>
+                     </div>
+                  <%  }); %>
+               </div>
+            <% }); %>
+         </div>
+      <% }); %>
+     </div>
   </body>
 </html>

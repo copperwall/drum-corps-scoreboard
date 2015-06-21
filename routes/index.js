@@ -7,8 +7,7 @@ router.get('/', function(req, res, next) {
    score_scraper.getEventList().then(function(list) {
       return score_scraper.getAllCompetitions(list);
    }).then(function(competitions) {
-     var scores = competitions.map(score_scraper.printScores).join('\n');
-     res.render('index', { title: 'Express', scores: scores });
+     res.render('index', { competitions: competitions });
    });
 });
 
