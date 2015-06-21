@@ -1,0 +1,21 @@
+{
+  "name": "drumcorps_scoreboard",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "author": "Chris Opperwall",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "~1.12.4",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "ejs": "~2.3.1",
+    "express": "~4.12.4",
+    "morgan": "~1.5.3",
+    "serve-favicon": "~2.2.1",
+    "promise": "^7.0.3",
+    "request-promise": "^0.4.2"
+  }
+}
