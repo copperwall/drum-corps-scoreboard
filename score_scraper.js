@@ -1,17 +1,37 @@
 // Score Scraper
-var Promise = require('promise');
-var request = require('request-promise');
+var Promise = require('promise'),
+    request = require('request-promise'),
+    redis   = require('then-redis')
 
 module.exports = (function score_scraper() {
-   // API URLs
    var apiURL = 'http://bridge.competitionsuite.com/api/orgscores/GetCompetitionsByOrganization/jsonp?organization=96b77ec2-333e-41e9-8d7d-806a8cbe116b&showTrainingEvents=false&callback=jQuery110203862365521490574_1434780076616&_=1434780076617';
+   var cache = redis.createClient();
 
    // Methods
    return {
-      // getEventList
       getEventList: function() {
-         // Grab list of event information.
-         return request(apiURL).then(parseJSON);
+         // Check cache
+         return cache.get('scoreboard:timeout').then(function(value) {
+            if (!value) {
+               // Cache MISS
+               return request(apiURL).then(function(res) {
+                  var json = /\(([^(]+)\);/.exec(res)[1];
+                  // set cache data
+                  cache.set('scoreboard:scores', json);
+                  // set cache timeout value
+                  cache.set('scoreboard:timeout', 1);
+                  // set cache timeout expiration to five minutes
+                  cache.expire('scoreboard:timeout', 300);
+
+                  return JSON.parse(json);
+               });
+            } else {
+               // Cache HIT
+               return cache.get('scoreboard:scores').then(function(json) {
+                  return JSON.parse(json);
+               });
+            }
+         });
       },
       getAllCompetitions: function(eventList) {
          // Grab data for all events in list.
