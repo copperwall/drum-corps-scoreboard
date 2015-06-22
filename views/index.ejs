@@ -14,10 +14,12 @@
      </header>
      <div id="main" class="container">
        <% competitions.forEach(function(competition) { %>
+         <% var date = new Date(competition.competitionDate).toString(); %>
+         <% date = date.match(/([A-Z][a-z]{2})\w* 0?(\d+)/) %>
          <div class="competition">
             <div class="competition-title">
                <h3 class="lead"><%= competition.name %></h3>
-               <p class="muted"><%= competition.location %></p>
+               <p><em><%= competition.location %>, <span><%= date[1] + ' ' + date[2] %></span></em></p>
             </div>
             <% competition.rounds.forEach(function(round) { %>
                <!-- Stuff about world/open class, all age -->
