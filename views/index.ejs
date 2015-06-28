@@ -13,6 +13,7 @@
        <h1>Drum Corps Scoreboard</h1>
      </header>
      <div id="main" class="container">
+       <h2>Recent Scores</h2>
        <% competitions.forEach(function(competition) { %>
          <% var date = new Date(competition.competitionDate).toString(); %>
          <% date = date.match(/([A-Z][a-z]{2})\w* 0?(\d+)/) %>
