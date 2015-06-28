@@ -39,8 +39,23 @@ module.exports = (function score_scraper() {
       getCompetition: function(event) {
          // Grab data for given event object
          var guid = event.competitionGuid;
-         return request('http://bridge.competitionsuite.com/api/orgscores/GetCompetition/jsonp?competition='
-           + guid + '&callback=jQuery11020556208913680166_1434787087901&_=1434787087903').then(parseJSON);
+         return cache.get('scoreboard:' + guid).then(function(value) {
+            if (!value) {
+               // MISS
+               // Grab value from service, set cache
+               request('http://bridge.competitionsuite.com/api/orgscores/GetCompetition/jsonp?competition='
+                + guid + '&callback=jQuery11020556208913680166_1434787087901&_=1434787087903'
+                ).then(function(value) {
+                  var json = /\(([^(]+)\);/.exec(value)[1];
+                  cache.set('scoreboard:' + guid, json);
+                  return JSON.parse(json);
+                });
+            } else {
+               // HIT
+               // return value from cache
+               return JSON.parse(value);
+            }
+         });
       }
    }
 
