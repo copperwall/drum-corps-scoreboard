@@ -43,7 +43,7 @@ module.exports = (function score_scraper() {
             if (!value) {
                // MISS
                // Grab value from service, set cache
-               request('http://bridge.competitionsuite.com/api/orgscores/GetCompetition/jsonp?competition='
+               return request('http://bridge.competitionsuite.com/api/orgscores/GetCompetition/jsonp?competition='
                 + guid + '&callback=jQuery11020556208913680166_1434787087901&_=1434787087903'
                 ).then(function(value) {
                   var json = /\(([^(]+)\);/.exec(value)[1];
